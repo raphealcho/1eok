@@ -41,33 +41,35 @@
 <body>
     <div class="container">
         <h2>저축 계산기</h2>
-        <label for="years">저축 기간 (년):</label>
-        <input type="number" id="years" min="1" max="10" value="5">
+        <label for="savings">월 저축 금액 (원):</label>
+        <input type="number" id="savings" min="1" value="1000000">
         
         <label for="rate">연 이율 (%):</label>
-        <input type="number" id="rate" min="0" step="0.1" value="0">
+        <input type="number" id="rate" min="0" step="0.1" value="5">
         
-        <button onclick="calculateSavings()">계산하기</button>
+        <button onclick="calculateTime()">소요 기간 계산</button>
         
         <div class="result" id="result"></div>
     </div>
 
     <script>
-        function calculateSavings() {
-            let years = parseInt(document.getElementById("years").value);
+        function calculateTime() {
+            let monthlySavings = parseFloat(document.getElementById("savings").value);
             let rate = parseFloat(document.getElementById("rate").value) / 100;
             let targetAmount = 100000000; // 1억 원
-            let months = years * 12;
-            let monthlySavings;
-
-            if (rate > 0) {
-                let factor = (Math.pow(1 + rate / 12, months) - 1) / (rate / 12);
-                monthlySavings = targetAmount / factor;
-            } else {
-                monthlySavings = targetAmount / months;
+            let months = 0;
+            let currentAmount = 0;
+            
+            while (currentAmount < targetAmount) {
+                currentAmount += monthlySavings;
+                currentAmount *= (1 + rate / 12);
+                months++;
             }
-
-            document.getElementById("result").innerHTML = `매월 저축해야 할 금액: <strong>${monthlySavings.toLocaleString()}원</strong>`;
+            
+            let years = Math.floor(months / 12);
+            let remainingMonths = months % 12;
+            
+            document.getElementById("result").innerHTML = `목표 달성까지 소요 기간: <strong>${years}년 ${remainingMonths}개월</strong>`;
         }
     </script>
 </body>
