@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>저축 계산기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 8px;
+            width: 100%;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>저축 계산기</h2>
+        <label for="years">저축 기간 (년):</label>
+        <input type="number" id="years" min="1" max="10" value="5">
+        
+        <label for="rate">연 이율 (%):</label>
+        <input type="number" id="rate" min="0" step="0.1" value="0">
+        
+        <button onclick="calculateSavings()">계산하기</button>
+        
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculateSavings() {
+            let years = parseInt(document.getElementById("years").value);
+            let rate = parseFloat(document.getElementById("rate").value) / 100;
+            let targetAmount = 100000000; // 1억 원
+            let months = years * 12;
+            let monthlySavings;
+
+            if (rate > 0) {
+                let factor = (Math.pow(1 + rate / 12, months) - 1) / (rate / 12);
+                monthlySavings = targetAmount / factor;
+            } else {
+                monthlySavings = targetAmount / months;
+            }
+
+            document.getElementById("result").innerHTML = `매월 저축해야 할 금액: <strong>${monthlySavings.toLocaleString()}원</strong>`;
+        }
+    </script>
+</body>
+</html>
